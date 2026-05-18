@@ -1,8 +1,7 @@
-
 'use client'
 
 import { useEffect, useRef, useCallback } from 'react'
-import { io, Socket } from 'socket.io-client'
+import socketIOClient, { Socket } from 'socket.io-client'
 
 const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000'
 
@@ -12,7 +11,7 @@ export function useSocket(room?: string) {
   useEffect(() => {
     const token = localStorage.getItem('token')
     
-    const socket = io(SOCKET_URL, {
+    const socket = socketIOClient(SOCKET_URL, {
       auth: { token },
       transports: ['websocket', 'polling'],
     })
@@ -48,9 +47,6 @@ export function useSocket(room?: string) {
 
   return { socket: socketRef.current, emit, on }
 }
-
-
-
 
 
 
