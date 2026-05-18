@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useCallback } from 'react'
-import socketIOClient, { Socket } from 'socket.io-client'
+import { io, Socket } from 'socket.io-client'
 
 const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000'
 
@@ -11,7 +11,7 @@ export function useSocket(room?: string) {
   useEffect(() => {
     const token = localStorage.getItem('token')
     
-    const socket = socketIOClient(SOCKET_URL, {
+    const socket: Socket = io(SOCKET_URL, {
       auth: { token },
       transports: ['websocket', 'polling'],
     })
@@ -25,7 +25,7 @@ export function useSocket(room?: string) {
       }
     })
 
-    socket.on('connect_error', (error) => {
+    socket.on('connect_error', (error: Error) => {
       console.error('Socket connection error:', error.message)
     })
 
